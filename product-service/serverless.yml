@@ -15,5 +15,11 @@ functions:
       - http:
           path: products
           method: get
-          cors:
-            origin: '*'
+          cors: true
+  getProductsById:
+    handler: src/handlers.getProductsById
+    events:
+      - http:
+          path: products/{productId}
+          method: get
+          cors: true
