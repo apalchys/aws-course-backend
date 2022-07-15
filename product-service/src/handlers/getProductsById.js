@@ -1,7 +1,7 @@
-const get = require('lodash/get');
-const { products } = require('../constants');
+import get from 'lodash/get'
+import { products } from '../constants';
 
-module.exports = async (event) => {
+export const handler = async (event) => {
     const productId = get(event, 'pathParameters.productId');
     const desiredProduct = products.find(product => product.id === productId);
 
@@ -14,7 +14,7 @@ module.exports = async (event) => {
                 'Access-Control-Allow-Headers': '*',
             },
             body: JSON.stringify({
-                message: 'No such product'
+                message: 'Product Not Found'
             }),
         };
     }
@@ -25,8 +25,6 @@ module.exports = async (event) => {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',
         },
-        body: JSON.stringify({
-            product: desiredProduct
-        }),
+        body: JSON.stringify(desiredProduct),
     };
 };

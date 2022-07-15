@@ -1,6 +1,6 @@
-const { products } = require('../constants');
+import { products } from '../constants';
 
-module.exports = async () => {
+export const handler = async () => {
     return {
         statusCode: 200,
         headers: {
