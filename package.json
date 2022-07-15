@@ -4,6 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/Luffi2539/aws-course-backend.git",
   "author": "Viktar-Kavaliou <viktar_kavaliou@epam.com>",
+  "scripts": {
+    "deploy:product": "cd product-service && sls deploy"
+  },
   "license": "MIT",
   "devDependencies": {
     "serverless": "^3.21.0"

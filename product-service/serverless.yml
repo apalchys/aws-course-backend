@@ -10,4 +10,10 @@ provider:
 
 functions:
   getProductsList:
-    handler: src/handlers/getProductsList
+    handler: src/handlers.getProductsList
+    events:
+      - http:
+          path: products
+          method: get
+          cors:
+            origin: '*'
