@@ -1,0 +1,13 @@
+service: product-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  profile: node-aws-course
+  region: eu-west-3
+
+functions:
+  getProductsList:
+    handler: src/handlers/getProductsList

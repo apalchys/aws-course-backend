@@ -1,0 +1,11 @@
+{
+  "name": "aws-course-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Luffi2539/aws-course-backend.git",
+  "author": "Viktar-Kavaliou <viktar_kavaliou@epam.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless": "^3.21.0"
+  }
+}
