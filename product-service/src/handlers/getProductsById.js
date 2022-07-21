@@ -1,15 +1,22 @@
 import get from 'lodash/get'
-import { products } from '../constants';
+import isEmpty from 'lodash/isEmpty'
+
 import { buildResponse } from "../utils";
+import { getProductById } from "../db/products";
 
 export const handler = async (event) => {
     const productId = get(event, 'pathParameters.productId');
-    const desiredProduct = products.find(product => product.id === productId);
+    try {
+        const product = await getProductById(productId)
 
-    if (!desiredProduct) {
-        return buildResponse(500, {
-            message: 'Product Not Found'
-        });
+        if (isEmpty(product)) {
+            return buildResponse(400, {
+                message: 'Product Not Found'
+            });
+        }
+
+        return buildResponse(200, product);
+    } catch(err) {
+        return buildResponse(500, err);
     }
-    return buildResponse(200, desiredProduct);
 };

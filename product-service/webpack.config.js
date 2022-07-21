@@ -1,3 +1,4 @@
+const { IgnorePlugin } = require('webpack');
 const path = require('path');
 const slsw = require('serverless-webpack');
 
@@ -13,6 +14,22 @@ module.exports = {
         // Turn off size warnings for entry points
         hints: false
     },
+    plugins: [
+        new IgnorePlugin({
+            checkResource(resource) {
+                return (
+                    /^pg-native$/.test(resource) ||
+                    /^sqlite3$/.test(resource) ||
+                    /^pg-query-stream$/.test(resource) ||
+                    /^oracledb$/.test(resource) ||
+                    /^better-sqlite3$/.test(resource) ||
+                    /^tedious$/.test(resource) ||
+                    /^mysql$/.test(resource) ||
+                    /^mysql2$/.test(resource)
+                );
+            },
+        })
+    ],
     devtool: 'nosources-source-map',
     module: {
         rules: [

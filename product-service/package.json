@@ -10,7 +10,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "knex": "^2.2.0",
+    "lodash": "^4.17.21",
+    "pg": "^8.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

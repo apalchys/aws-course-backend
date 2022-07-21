@@ -7,6 +7,12 @@ provider:
   runtime: nodejs14.x
   profile: node-aws-course
   region: eu-west-3
+  environment:
+    PG_HOST: secret
+    PG_PORT: secret
+    PG_DATABASE: secret
+    PG_USERNAME: secret
+    PG_PASSWORD: secret
 
 plugins:
   - serverless-webpack
