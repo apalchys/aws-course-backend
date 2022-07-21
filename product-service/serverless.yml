@@ -2,17 +2,19 @@ service: product-service
 
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs14.x
   profile: node-aws-course
   region: eu-west-3
   environment:
-    PG_HOST: secret
-    PG_PORT: secret
-    PG_DATABASE: secret
-    PG_USERNAME: secret
-    PG_PASSWORD: secret
+    PG_HOST: ${env:PG_HOST}
+    PG_PORT: ${env:PG_PORT}
+    PG_DATABASE: ${env:PG_DATABASE}
+    PG_USERNAME: ${env:PG_USERNAME}
+    PG_PASSWORD: ${env:PG_PASSWORD}
 
 plugins:
   - serverless-webpack
