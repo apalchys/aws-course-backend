@@ -1,4 +1,4 @@
-import { handler } from './getProductsById'
+import { handler } from './getProductById'
 import { getProductById } from "../db/products";
 
 jest.mock('../db/products')

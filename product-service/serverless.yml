@@ -32,8 +32,8 @@ functions:
           method: get
           cors: true
 
-  getProductsById:
-    handler: src/handlers/getProductsById.handler
+  getProductById:
+    handler: src/handlers/getProductById.handler
     events:
       - http:
           path: products/{productId}
