@@ -7,6 +7,7 @@ import { getProductById } from "../db/products";
 export const handler = async (event) => {
     const productId = get(event, 'pathParameters.productId');
     try {
+        console.log('Get Product by Id event', event);
         const product = await getProductById(productId)
 
         if (isEmpty(product)) {
