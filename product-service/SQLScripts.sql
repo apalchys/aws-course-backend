@@ -32,3 +32,5 @@ insert into stocks (product_id, count) values
 	('c5972fd7-0c20-4968-b2a5-9febe689dca3', 10),
 	('e0e308e0-fb63-4e6b-897f-6bd7693e68ea', 10),
 	('46e0e07a-2b62-4af6-8889-f6e0b0b836e0', 10)
+	
+alter table stocks add constraint stocks_nonnegative check (count >= 0);
