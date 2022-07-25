@@ -1,0 +1,35 @@
+service: product-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  profile: node-aws-course
+  region: eu-west-3
+
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'yarn'
+
+functions:
+  getProductsList:
+    handler: src/handlers/getProductsList.handler
+    events:
+      - http:
+          path: products
+          method: get
+          cors: true
+
+  getProductsById:
+    handler: src/handlers/getProductsById.handler
+    events:
+      - http:
+          path: products/{productId}
+          method: get
+          cors: true
