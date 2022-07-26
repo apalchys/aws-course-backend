@@ -1,6 +1,3 @@
-import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
-
 export const buildResponse = (statusCode, body) => ({
     statusCode: statusCode,
     headers: {
@@ -11,14 +8,10 @@ export const buildResponse = (statusCode, body) => ({
     body: JSON.stringify(body),
 })
 
-export const checkBodyParameters = (requiredParameters, data) => {
-    return requiredParameters.every((parameter) => {
-        const parameterValue = get(data, parameter)
-
-        if (isUndefined(parameterValue)) {
-            return false
-        }
-
-        return true
-    })
-}
+export const streamToString = (stream) =>
+    new Promise((resolve, reject) => {
+        const chunks = [];
+        stream.on("data", (chunk) => chunks.push(chunk));
+        stream.on("error", reject);
+        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+    });

@@ -15,6 +15,20 @@ provider:
     PG_DATABASE: ${env:PG_DATABASE}
     PG_USERNAME: ${env:PG_USERNAME}
     PG_PASSWORD: ${env:PG_PASSWORD}
+    IMPORT_AWS_REGION: ${env:IMPORT_AWS_REGION}
+    IMPORT_BUCKET_NAME: ${env:IMPORT_BUCKET_NAME}
+    IMPORT_UPLOADED_PREFIX: ${env:IMPORT_UPLOADED_PREFIX}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::aws-course-import-products"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - "arn:aws:s3:::aws-course-import-products/*"
 
 plugins:
   - serverless-webpack
@@ -27,26 +41,10 @@ custom:
     packager: 'yarn'
 
 functions:
-  getProductsList:
-    handler: src/handlers/getProductsList.handler
+  importProductsFile:
+    handler: src/handlers/importProductsFile.handler
     events:
       - http:
-          path: products
+          path: import/{name}
           method: get
-          cors: true
-
-  getProductById:
-    handler: src/handlers/getProductById.handler
-    events:
-      - http:
-          path: products/{productId}
-          method: get
-          cors: true
-
-  createProduct:
-    handler: src/handlers/createProduct.handler
-    events:
-      - http:
-          path: products
-          method: post
           cors: true
