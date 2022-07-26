@@ -7,7 +7,7 @@ import { buildResponse } from "../utils";
 
 export const handler = async (event) => {
     console.log('import products file event', event)
-    const fileName = get(event, 'pathParameters.name');
+    const fileName = get(event, 'queryStringParameters.name');
 
     if (!fileName) {
         return buildResponse(500, {
@@ -18,8 +18,9 @@ export const handler = async (event) => {
     try {
         const bucketParams = {
             Bucket: process.env.IMPORT_BUCKET_NAME,
-            Key: `${process.env.IMPORT_UPLOADED_PREFIX}/${fileName}.csv`
+            Key: `${process.env.IMPORT_UPLOADED_PREFIX}/${fileName}`
         }
+
         const signedUrl = await getSignedUrl(s3Client, new PutObjectCommand(bucketParams), { expiresIn: 3600 })
 
         return buildResponse(200, {

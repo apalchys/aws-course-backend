@@ -45,6 +45,10 @@ functions:
     handler: src/handlers/importProductsFile.handler
     events:
       - http:
-          path: import/{name}
+          path: import
           method: get
           cors: true
+          request:
+            parameters:
+              querystrings:
+                name: true
