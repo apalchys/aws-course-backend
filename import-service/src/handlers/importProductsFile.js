@@ -18,7 +18,7 @@ export const handler = async (event) => {
     try {
         const bucketParams = {
             Bucket: process.env.IMPORT_BUCKET_NAME,
-            Key: `${process.env.IMPORT_UPLOADED_PREFIX}/${fileName}`
+            Key: `${process.env.IMPORT_UPLOADED_PREFIX}${fileName}`
         }
 
         const signedUrl = await getSignedUrl(s3Client, new PutObjectCommand(bucketParams), { expiresIn: 3600 })

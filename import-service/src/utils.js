@@ -1,3 +1,6 @@
+import fs from "fs";
+import csv from "csv-parser";
+
 export const buildResponse = (statusCode, body) => ({
     statusCode: statusCode,
     headers: {
@@ -15,3 +18,20 @@ export const streamToString = (stream) =>
         stream.on("error", reject);
         stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     });
+
+export const readCSVFile = (data) => new Promise((res, rej) => {
+    const results = []
+    try {
+        data
+            .pipe(csv())
+            .on('data', (data) => {
+                console.log(data)
+                results.push(data)
+            })
+            .on('end', () => {
+                res(results)
+            })
+    } catch (err) {
+        rej(err)
+    }
+})

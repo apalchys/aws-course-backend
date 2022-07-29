@@ -52,3 +52,12 @@ functions:
             parameters:
               querystrings:
                 name: true
+  importFileParser:
+    handler: src/handlers/importFileParser.handler
+    events:
+      - s3:
+          bucket: ${env:IMPORT_BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: ${env:IMPORT_UPLOADED_PREFIX}
+          existing: true
