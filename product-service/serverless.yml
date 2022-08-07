@@ -2,14 +2,23 @@ service: product-service
 
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs14.x
   profile: node-aws-course
   region: eu-west-3
+  environment:
+    PG_HOST: ${env:PG_HOST}
+    PG_PORT: ${env:PG_PORT}
+    PG_DATABASE: ${env:PG_DATABASE}
+    PG_USERNAME: ${env:PG_USERNAME}
+    PG_PASSWORD: ${env:PG_PASSWORD}
 
 plugins:
   - serverless-webpack
+  - serverless-offline
 
 custom:
   webpack:
@@ -26,10 +35,18 @@ functions:
           method: get
           cors: true
 
-  getProductsById:
-    handler: src/handlers/getProductsById.handler
+  getProductById:
+    handler: src/handlers/getProductById.handler
     events:
       - http:
           path: products/{productId}
           method: get
+          cors: true
+
+  createProduct:
+    handler: src/handlers/createProduct.handler
+    events:
+      - http:
+          path: products
+          method: post
           cors: true
