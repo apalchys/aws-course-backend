@@ -15,6 +15,52 @@ provider:
     PG_DATABASE: ${env:PG_DATABASE}
     PG_USERNAME: ${env:PG_USERNAME}
     PG_PASSWORD: ${env:PG_PASSWORD}
+    PRODUCT_AWS_REGION: ${env:PRODUCT_AWS_REGION}
+    IMPORT_PRODUCTS_TOPIC_ARN:
+      Ref: ImportProductsTopic
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "sns:*"
+      Resource:
+        Ref: ImportProductsTopic
+
+resources:
+  Resources:
+    ImportQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: import-file-queue
+    ImportProductsTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: import-products-topic
+    BigStockSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:BIG_STOCK_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: ImportProductsTopic
+        FilterPolicy:
+          count:
+            - numeric:
+                - ">"
+                - 10
+    RegularStockSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:REGULAR_STOCK_EMAIL}
+        Protocol: email
+        TopicArn:
+          Ref: ImportProductsTopic
+        FilterPolicy:
+          count:
+            - numeric:
+                - "<="
+                - 10
+
+
 
 plugins:
   - serverless-webpack
@@ -50,3 +96,21 @@ functions:
           path: products
           method: post
           cors: true
+
+  deleteProduct:
+    handler: src/handlers/deleteProduct.handler
+    events:
+      - http:
+          path: products/{productId}
+          method: delete
+          cors: true
+
+  catalogBatchProcess:
+    handler: src/handlers/catalogBatchProcess.handler
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - ImportQueue
+              - Arn
