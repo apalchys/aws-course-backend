@@ -1,0 +1,27 @@
+service: authorization-service
+
+frameworkVersion: '3'
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  profile: node-aws-course
+  region: eu-west-3
+  environment:
+    luffi2539: ${env:luffi2539}
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'yarn'
+
+functions:
+  basicAuthorizer:
+    handler: src/handlers/basicAuthorizer.handler
