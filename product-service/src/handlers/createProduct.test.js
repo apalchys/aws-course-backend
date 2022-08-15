@@ -11,6 +11,16 @@ const PRODUCT_MOCK = {
 }
 
 describe('createProduct',() => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should fail because of database error', async () => {
+        createProduct.mockReturnValueOnce(Promise.reject('error'))
+        const response = await handler({ body: JSON.stringify(PRODUCT_MOCK) })
+        expect(response.statusCode).toBe(500);
+    })
+
     it('should create product', async () => {
         createProduct.mockReturnValueOnce(Promise.resolve(PRODUCT_MOCK))
         const response = await handler({ body: JSON.stringify(PRODUCT_MOCK) })
@@ -21,13 +31,6 @@ describe('createProduct',() => {
     it('should fail because of lack of parameters', async () => {
         createProduct.mockReturnValueOnce(Promise.resolve(PRODUCT_MOCK))
         const response = await handler({ body: JSON.stringify({ price: 30 }) })
-        expect(response.statusCode).toBe(500);
-    })
-
-
-    it('should fail because of database error', async () => {
-        createProduct.mockReturnValueOnce(Promise.reject('error'))
-        const response = await handler({ body: JSON.stringify({ price: 30 }) })
-        expect(response.statusCode).toBe(500);
+        expect(response.statusCode).toBe(400);
     })
 })

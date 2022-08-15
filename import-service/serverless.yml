@@ -1,0 +1,63 @@
+service: import-service
+
+frameworkVersion: '3'
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  profile: node-aws-course
+  region: eu-west-3
+  environment:
+    PG_HOST: ${env:PG_HOST}
+    PG_PORT: ${env:PG_PORT}
+    PG_DATABASE: ${env:PG_DATABASE}
+    PG_USERNAME: ${env:PG_USERNAME}
+    PG_PASSWORD: ${env:PG_PASSWORD}
+    IMPORT_AWS_REGION: ${env:IMPORT_AWS_REGION}
+    IMPORT_BUCKET_NAME: ${env:IMPORT_BUCKET_NAME}
+    IMPORT_UPLOADED_PREFIX: ${env:IMPORT_UPLOADED_PREFIX}
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "s3:ListBucket"
+      Resource:
+        - "arn:aws:s3:::aws-course-import-products"
+    - Effect: "Allow"
+      Action:
+        - "s3:*"
+      Resource:
+        - "arn:aws:s3:::aws-course-import-products/*"
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'yarn'
+
+functions:
+  importProductsFile:
+    handler: src/handlers/importProductsFile.handler
+    events:
+      - http:
+          path: import
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                name: true
+  importFileParser:
+    handler: src/handlers/importFileParser.handler
+    events:
+      - s3:
+          bucket: ${env:IMPORT_BUCKET_NAME}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: ${env:IMPORT_UPLOADED_PREFIX}
+          existing: true

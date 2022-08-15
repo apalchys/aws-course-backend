@@ -18,8 +18,11 @@ export const handler = async (event) => {
 
         const newProductData = await createProduct(data);
 
+        console.log(newProductData)
+
         return buildResponse(200, newProductData);
     } catch(err) {
+        console.log(err)
         return buildResponse(500, err);
     }
 };
