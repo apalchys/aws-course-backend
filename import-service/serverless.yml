@@ -52,6 +52,12 @@ functions:
             parameters:
               querystrings:
                 name: true
+          authorizer:
+            name: tokenAuthorizer
+            arn: "arn:aws:lambda:eu-west-3:935586505400:function:authorization-service-dev-basicAuthorizer"
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
   importFileParser:
     handler: src/handlers/importFileParser.handler
     events:
