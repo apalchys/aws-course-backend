@@ -25,7 +25,6 @@ export const readCSVFile = (data) => new Promise((res, rej) => {
         data
             .pipe(csv())
             .on('data', (data) => {
-                console.log(data)
                 results.push(data)
             })
             .on('end', () => {

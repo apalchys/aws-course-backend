@@ -1,7 +1,9 @@
 import { CopyObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { SendMessageCommand } from "@aws-sdk/client-sqs"
 
 import s3Client from '../libs/s3';
-import {buildResponse, readCSVFile} from "../utils";
+import sqsClient from '../libs/sqs';
+import { buildResponse, readCSVFile } from "../utils";
 
 export const handler = async (event) => {
     console.log('import parser triggered with event', event)
@@ -19,6 +21,14 @@ export const handler = async (event) => {
             const csvContent = await readCSVFile(newObject.Body)
 
             console.log('parsed successfully', csvContent)
+
+            for (const entry of csvContent) {
+                const response = await sqsClient.send(new SendMessageCommand({
+                    MessageBody: JSON.stringify(entry),
+                    QueueUrl: process.env.IMPORT_SQS_URL
+                }))
+                console.log('sqsResponse', response)
+            }
 
             const copyParams = {
                 Bucket: process.env.IMPORT_BUCKET_NAME,
