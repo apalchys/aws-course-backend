@@ -16,19 +16,19 @@ provider:
     IMPORT_SQS_URL: ${env:IMPORT_SQS_URL}
 
   iamRoleStatements:
-    - Effect: "Allow"
-      Action: "s3:ListBucket"
+    - Effect: 'Allow'
+      Action: 's3:ListBucket'
       Resource:
-        - "arn:aws:s3:::aws-course-import-products"
-    - Effect: "Allow"
+        - 'arn:aws:s3:::aws-course-import-products'
+    - Effect: 'Allow'
       Action:
-        - "s3:*"
+        - 's3:*'
       Resource:
-        - "arn:aws:s3:::aws-course-import-products/*"
-    - Effect: "Allow"
-      Action: "sqs:*"
+        - 'arn:aws:s3:::aws-course-import-products/*'
+    - Effect: 'Allow'
+      Action: 'sqs:*'
       Resource:
-        - "arn:aws:sqs:eu-west-3:935586505400:import-file-queue"
+        - 'arn:aws:sqs:eu-west-3:935586505400:import-file-queue'
 
 plugins:
   - serverless-webpack
@@ -54,7 +54,7 @@ functions:
                 name: true
           authorizer:
             name: tokenAuthorizer
-            arn: "arn:aws:lambda:eu-west-3:935586505400:function:authorization-service-dev-basicAuthorizer"
+            arn: 'arn:aws:lambda:eu-west-3:935586505400:function:authorization-service-dev-basicAuthorizer'
             resultTtlInSeconds: 0
             identitySource: method.request.header.Authorization
             type: token
