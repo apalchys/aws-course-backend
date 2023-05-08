@@ -17,10 +17,7 @@ const stack = new cdk.Stack(app, 'ImportServiceStack', {
   env: { region: 'eu-west-3' },
 });
 
-const bucket = new s3.Bucket(stack, 'ImportBucket', {
-  bucketName: 'aws-course-import-products',
-  removalPolicy: RemovalPolicy.DESTROY,
-});
+const bucket = s3.Bucket.fromBucketName(stack, 'ImportBucket', 'aws-course-import-products');
 
 const queue = sqs.Queue.fromQueueArn(stack, 'ImportFileQueue', 'arn:aws:sqs:eu-west-3:935586505400:import-file-queue');
 
@@ -30,7 +27,7 @@ const importProductsFileLambda = new nodejs.NodejsFunction(stack, 'ImportProduct
   runtime: lambda.Runtime.NODEJS_18_X,
   environment: {
     IMPORT_AWS_REGION: process.env.IMPORT_AWS_REGION!,
-    IMPORT_BUCKET_NAME: process.env.IMPORT_BUCKET_NAME!,
+    IMPORT_BUCKET_NAME: bucket.bucketName,
     IMPORT_UPLOADED_PREFIX: process.env.IMPORT_UPLOADED_PREFIX!,
     IMPORT_SQS_URL: queue.queueUrl,
   },

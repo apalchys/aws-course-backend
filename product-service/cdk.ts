@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = new cdk.App();
 
-const stack = new cdk.Stack(app, 'AuthorizationServiceStack', {
+const stack = new cdk.Stack(app, 'ProductServiceStack', {
   env: { region: 'eu-west-3' },
 });
 
@@ -49,6 +49,18 @@ const sharedLambdaProps: Partial<NodejsFunctionProps> = {
     PG_PASSWORD: process.env.PG_PASSWORD!,
     PRODUCT_AWS_REGION: process.env.PRODUCT_AWS_REGION!,
     IMPORT_PRODUCTS_TOPIC_ARN: importProductTopic.topicArn,
+  },
+  bundling: {
+    externalModules: [
+      'pg-native',
+      'sqlite3',
+      'pg-query-stream',
+      'oracledb',
+      'better-sqlite3',
+      'tedious',
+      'mysql',
+      'mysql2',
+    ],
   },
 };
 

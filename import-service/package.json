@@ -5,7 +5,7 @@
   "repository": "https://github.com/Luffi2539/aws-course-backend.git",
   "author": "Viktar-Kavaliou <viktar_kavaliou@epam.com>",
   "scripts": {
-    "deploy": "sls deploy",
+    "deploy": "cdk deploy",
     "test": "jest",
     "format": "prettier --write ."
   },
