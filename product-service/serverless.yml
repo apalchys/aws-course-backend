@@ -20,8 +20,8 @@ provider:
       Ref: ImportProductsTopic
 
   iamRoleStatements:
-    - Effect: "Allow"
-      Action: "sns:*"
+    - Effect: 'Allow'
+      Action: 'sns:*'
       Resource:
         Ref: ImportProductsTopic
 
@@ -45,7 +45,7 @@ resources:
         FilterPolicy:
           count:
             - numeric:
-                - ">"
+                - '>'
                 - 10
     RegularStockSubscription:
       Type: AWS::SNS::Subscription
@@ -57,10 +57,8 @@ resources:
         FilterPolicy:
           count:
             - numeric:
-                - "<="
+                - '<='
                 - 10
-
-
 
 plugins:
   - serverless-webpack
